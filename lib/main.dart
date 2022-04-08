@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomePage'),
+        title: const Text('Home'),
       ),
       body: FutureBuilder(
         future: Firebase.initializeApp(
