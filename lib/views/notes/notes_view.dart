@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
 
-import '../constants/routes.dart';
-import '../enums/menu_action.dart';
+import '../../constants/routes.dart';
+import '../../enums/menu_action.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({Key? key}) : super(key: key);
@@ -32,8 +32,14 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Main UI"),
+          title: const Text("Your Notes"),
           actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(newNoteRoute);
+              },
+              icon: const Icon(Icons.add),
+            ),
             PopupMenuButton<MenuAction>(onSelected: (value) async {
               switch (value) {
                 case MenuAction.logout:
@@ -56,14 +62,16 @@ class _NotesViewState extends State<NotesView> {
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
-                return StreamBuilder(builder: (context, snapshot) {
-                  switch(snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return const Text('Waiting for all notes');
-                    default:
-                    return const CircularProgressIndicator();
-                  }
-                }, stream: _notesService.allNotes);
+                return StreamBuilder(
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Text('Waiting for all notes');
+                        default:
+                          return const CircularProgressIndicator();
+                      }
+                    },
+                    stream: _notesService.allNotes);
               default:
                 return const CircularProgressIndicator();
             }
